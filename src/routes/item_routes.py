@@ -1,10 +1,8 @@
-
 from typing import Dict, List
 from fastapi import APIRouter, HTTPException, status
 
-from item_be.src.constants import MESSAGE_ERROR_MISSING_ITEM
-from item_be.src.schemas.item_schemas import Item, ItemRequest
-
+from src.constants import MESSAGE_ERROR_MISSING_ITEM
+from src.schemas.item_schemas import Item, ItemRequest
 
 router = APIRouter()
 
@@ -41,5 +39,4 @@ def update_item(item_id : int, new_item : ItemRequest):
 def delete_item(item_id : int):
   if item_id not in items.keys():
       raise HTTPException(status_code=404, detail=[MESSAGE_ERROR_MISSING_ITEM])
-  item = items.pop(item_id)
-  return item
+  _ = items.pop(item_id)
