@@ -9,17 +9,17 @@ router = APIRouter()
 items: Dict[int, Item] = {}
 _last_item_id = 0
 
-@router.get("/item", response_model=List[Item])
+@router.get("/items", response_model=List[Item])
 def read_all_items():
   return list(items.values())
 
-@router.get("/item/{item_id}", response_model=Item)
+@router.get("/items/{item_id}", response_model=Item)
 def read_item_by_id(item_id : int):
   if item_id not in items.keys():
       raise HTTPException(status_code=404, detail=[MESSAGE_ERROR_MISSING_ITEM])
   return items[item_id]
 
-@router.post("/item", response_model=Item, status_code=status.HTTP_201_CREATED)
+@router.post("/items", response_model=Item, status_code=status.HTTP_201_CREATED)
 def create_item(item : ItemRequest):
   global _last_item_id
   _last_item_id += 1
@@ -27,7 +27,7 @@ def create_item(item : ItemRequest):
   items[_last_item_id] = new_item
   return new_item
 
-@router.put("/item/{item_id}", response_model=Item)
+@router.put("/items/{item_id}", response_model=Item)
 def update_item(item_id : int, new_item : ItemRequest):
   if item_id not in items.keys():
       raise HTTPException(status_code=404, detail=[MESSAGE_ERROR_MISSING_ITEM])
@@ -35,7 +35,7 @@ def update_item(item_id : int, new_item : ItemRequest):
   items[item_id].price = new_item.price
   return items[item_id]
 
-@router.delete("/item/{item_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/items/{item_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_item(item_id : int):
   if item_id not in items.keys():
       raise HTTPException(status_code=404, detail=[MESSAGE_ERROR_MISSING_ITEM])
